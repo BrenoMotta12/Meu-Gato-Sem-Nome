@@ -10,14 +10,14 @@ import android.widget.TextView;
 import com.example.meugatosemnome.R;
 import com.example.meugatosemnome.entidades.Gato;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GatoAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Gato> itens;
+    private List<Gato> itens;
 
-    public GatoAdapter(Context context, ArrayList<Gato> itens) {
+    public GatoAdapter(Context context, List<Gato> itens) {
         this.context = context;
         this.itens = itens;
     }
@@ -39,21 +39,22 @@ public class GatoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View inflater = LayoutInflater.from(context).inflate(R.layout.gato_linhas, parent,
-                false);
+        View inflater = LayoutInflater.from(context).inflate(R.layout.gato_linhas, parent, false);
         TextView txtId = inflater.findViewById(R.id.id);
         TextView txtdoencas = inflater.findViewById(R.id.doenca);
         // ImageView imageGato = inflater.findViewById(R.id.imgGato);
         TextView txtDescricao = inflater.findViewById(R.id.descricao);
+        TextView txtCastrado = inflater.findViewById(R.id.castrado);
         TextView txtFilhotes = inflater.findViewById(R.id.filhotes);
         TextView txtIdade = inflater.findViewById(R.id.idade);
 
-        txtId.setText(itens.get(position).getId());
+        txtId.setText(String.valueOf(itens.get(position).getId()));
         txtdoencas.setText(itens.get(position).isDoencas() ? "Sim" : "Não");
         // imageGato.setImageDrawable(itens.get(position).getFoto());
         txtDescricao.setText(itens.get(position).getDescricaoDoencas());
-        txtFilhotes.setText(itens.get(position).isDoencas() ? "Sim" : "Não");
-        txtIdade.setText(itens.get(position).getIdade());
+        txtCastrado.setText(itens.get(position).isCastrado() ? "Sim" : "Não");
+        txtFilhotes.setText(String.valueOf(itens.get(position).getFilhotes()));
+        txtIdade.setText(String.valueOf(itens.get(position).getIdade()));
 
         return inflater;
     }

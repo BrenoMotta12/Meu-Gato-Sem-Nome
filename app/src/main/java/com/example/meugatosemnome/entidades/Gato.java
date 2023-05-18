@@ -1,18 +1,15 @@
 package com.example.meugatosemnome.entidades;
 
-import android.graphics.drawable.Drawable;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.meugatosemnome.activities.MainActivity;
 import com.example.meugatosemnome.conexoes.ConexaoSQLite;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Gato {
 
@@ -25,6 +22,15 @@ public class Gato {
     // private byte[] foto;
 
     public Gato(){
+    }
+
+    public Gato(int id, boolean doencas, String descricaoDoencas, boolean castrado, int filhotes, int idade) {
+        this.id = id;
+        this.doencas = doencas;
+        this.descricaoDoencas = descricaoDoencas;
+        this.castrado = castrado;
+        this.filhotes = filhotes;
+        this.idade = idade;
     }
 
     // INICIO GETTERS AND SETTERS
@@ -93,97 +99,63 @@ public class Gato {
 
     // METODO QUE ADICIONA UM NOVO GATO
 
-    public void adicionarGato(Gato gato, ConexaoSQLite conexaoSQLite) {
+    public static void adicionarGato(Gato gato, ConexaoSQLite conexaoSQLite) {
+        SQLiteDatabase db = conexaoSQLite.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id_Gato", gato.getId());
+        values.put("doencas", gato.isDoencas());
+        values.put("descricao_doencas", gato.getDescricaoDoencas());
+        values.put("castrado", gato.isCastrado());
+        values.put("filhotes", gato.getFilhotes());
+        values.put("idade", gato.getIdade());
 
-        String sqlInsert = " INSERT INTO Gato (" +
-                "id_Gato," +
-                "doencas," +
-                "descricao_doencas," +
-                "castrado" +
-                "filhotes" +
-                "idade" +
-                ") VALUES(?,?,?,?,?,?,?)";
-
-        PreparedStatement preparedStatement = conexaoSQLite.criarPreparedStatement(sqlInsert);
-        try {
-            preparedStatement.setInt(1, gato.getId());
-            preparedStatement.setBoolean(2, gato.isDoencas());
-            // preparedStatement.setBytes(3, gato.getFoto());
-            preparedStatement.setString(3, gato.getDescricaoDoencas());
-            preparedStatement.setBoolean(4, gato.isCastrado());
-            preparedStatement.setInt(5, gato.getFilhotes());
-            preparedStatement.setInt(6, gato.getIdade());
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+        db.insert("Gato", null, values);
+        db.close();
     }
 
-    // MÉTODO QUE LISTA OS GATOS
-    public static ArrayList<Gato> buscaGato(ConexaoSQLite conexaoSQLite) {
+    public static List<Gato> buscaGato(ConexaoSQLite conexaoSQLite) {
+        List<Gato> gatos = new ArrayList<>();
 
-        ResultSet resultSet = null;
-        Statement statement = null;
-        statement = conexaoSQLite.criarStatement();
+        SQLiteDatabase db = conexaoSQLite.getReadableDatabase();
 
-        String query = "SELECT * FROM Gato;";
-        List<Gato> gatos = new ArrayList<Gato>();
-        try {
-            resultSet = statement.executeQuery(query);
+        Cursor cursor = db.rawQuery("SELECT * FROM Gato", null);
+        if (cursor.moveToFirst()) {
+            do {
+                int idIndex = cursor.getColumnIndex("id_Gato");
+                int doencasIndex = cursor.getColumnIndex("doencas");
+                int descricaoDoencasIndex = cursor.getColumnIndex("descricao_doencas");
+                int castradoIndex = cursor.getColumnIndex("castrado");
+                int filhotesIndex = cursor.getColumnIndex("filhotes");
+                int idadeIndex = cursor.getColumnIndex("idade");
 
-            while (resultSet.next()) {
+                int id = cursor.getInt(idIndex);
+                boolean doencas = cursor.getInt(doencasIndex) != 0;
+                String descricaoDoencas = cursor.getString(descricaoDoencasIndex);
+                boolean castrado = cursor.getInt(castradoIndex) != 0;
+                int filhotes = cursor.getInt(filhotesIndex);
+                int idade = cursor.getInt(idadeIndex);
+
                 Gato gato = new Gato();
-                gato.setId(resultSet.getInt("id_Gato"));
-                gato.setDoencas(resultSet.getBoolean("doencas"));
-                // gato.setFoto(resultSet.getBytes("foto"));
-                gato.setDescricaoDoencas(resultSet.getString("descricao_doencas"));
-                gato.setCastrado(resultSet.getBoolean("castrado"));
-                gato.setFilhotes(resultSet.getInt("filhotes"));
-                gato.setIdade(resultSet.getInt("idade"));
+                gato.setId(id);
+                gato.setDoencas(doencas);
+                gato.setDescricaoDoencas(descricaoDoencas);
+                gato.setCastrado(castrado);
+                gato.setFilhotes(filhotes);
+                gato.setIdade(idade);
 
                 gatos.add(gato);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro na consulta");
-        } finally {
-            try {
-                assert resultSet != null;
-                resultSet.close();
-                statement.close();
-            } catch (SQLException ex){
-                System.out.println("Erro de fechamentos");
-            }
+            } while (cursor.moveToNext());
         }
-        return (ArrayList<Gato>) gatos;
+
+        cursor.close();
+        db.close();
+
+        return gatos;
     }
 
-    public void excluirGato (ConexaoSQLite conexaoSQLite, Gato gato){
-        String sql = "DELETE FROM Gato WHERE id_Gato = ?;";
-
-        PreparedStatement preparedStatement = conexaoSQLite.criarPreparedStatement(sql);
-        try {
-            preparedStatement.setInt(1, gato.getId());
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+    public void excluirGato(SQLiteOpenHelper openHelper, Gato gato) {
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        db.delete("Gato", "id_Gato = ?", new String[]{String.valueOf(gato.getId())});
+        db.close();
     }
 }

@@ -2,16 +2,16 @@ package com.example.meugatosemnome.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import com.example.meugatosemnome.R;
 import com.example.meugatosemnome.conexoes.ConexaoSQLite;
-import com.example.meugatosemnome.conexoes.CriarBancos;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ConexaoSQLite conexaoSQLite;
     private Button buttonAnimais;
     private Button buttonDoacoes;
     private Button buttonRelatorios;
@@ -21,10 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConexaoSQLite conexaoSQLite = new ConexaoSQLite();
-        CriarBancos criarBancos = new CriarBancos(conexaoSQLite);
-        criarBancos.criarTabelas();
-
+        conexaoSQLite = new ConexaoSQLite(this);
+        SQLiteDatabase db = conexaoSQLite.getWritableDatabase();
 
         // BOTÃO QUE LEVA PARA A TELA DOS GATOS
         buttonAnimais = findViewById(R.id.buttonAnimais);
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        db.close();
     }
 }
 

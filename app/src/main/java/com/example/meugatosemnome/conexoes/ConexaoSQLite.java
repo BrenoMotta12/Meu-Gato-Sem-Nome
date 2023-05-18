@@ -1,69 +1,74 @@
 package com.example.meugatosemnome.conexoes;
 
-
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+public class ConexaoSQLite extends SQLiteOpenHelper {
 
-public class ConexaoSQLite {
+    private static final String NOME_BANCO_DE_DADOS = "db_mgsn.db";
+    private static final int VERSAO_BANCO_DE_DADOS = 1;
 
-    private Connection conexao;
-
-    public Connection getConexao() {
-        return this.conexao;
+    public ConexaoSQLite(Context context) {
+        super(context, NOME_BANCO_DE_DADOS, null, VERSAO_BANCO_DE_DADOS);
     }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
 
-    // Conecta a um banco de dados (cria o banco se ele não existir)
-    public boolean conectar() {
+        String sqlAreiaCategoria = "CREATE TABLE IF NOT EXISTS Areia_Categoria (" +
+                "id_Areia_Categoria INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "descricao_areia TEXT NOT NULL" +
+                ")";
 
-        try {
-            String url = "jdbc:sqlite:banco_de_dados/db_mgsn.db";
+        String sqlAreia = "CREATE TABLE IF NOT EXISTS Areia (" +
+                "id_Areia INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "quantidade REAL NOT NULL," +
+                "valor REAL NOT NULL," +
+                "Categoria_id_Areia_Categoria INTEGER REFERENCES Areia_Categoria (id_Areia_Categoria) NOT NULL" +
+                ")";
 
-            this.conexao = DriverManager.getConnection(url);
-            System.out.println("Conectado!!!");
+        String sqlMedicamentoCategoria = "CREATE TABLE IF NOT EXISTS Medicamento_Categoria (" +
+                "id_Medicamento_Categoria INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "descricao_medicamento TEXT NOT NULL" +
+                ")";
 
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
+        String sqlMedicamento = "CREATE TABLE IF NOT EXISTS Medicamento (" +
+                "id_Medicamento INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "nome_medicamento TEXT NOT NULL," +
+                "quantidade REAL NOT NULL," +
+                "valor REAL NOT NULL," +
+                "Categoria_id_Medicamento_Categoria INTEGER REFERENCES Medicamento_Categoria (id_Medicamento_Categoria) NOT NULL" +
+                ")";
 
-        return true;
+        String sqlGato = "CREATE TABLE IF NOT EXISTS Gato (" +
+                "id_Gato INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "doencas NUMERIC NOT NULL," +
+                "descricao_doencas TEXT," +
+                "castrado NUMERIC NOT NULL," +
+                "filhotes INTEGER NOT NULL," +
+                "idade INTEGER" +
+                ")";
+
+        String sqlRacaoCategoria = "CREATE TABLE IF NOT EXISTS Racao_Categoria (" +
+                "id_Racao_Categoria INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "descricao_racao TEXT NOT NULL" +
+                ")";
+
+        String sqlRacao = "CREATE TABLE IF NOT EXISTS Racao (" +
+                "id_Racao INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "quantidade REAL NOT NULL," +
+                "valor REAL NOT NULL," +
+                "Categoria_id_Racao_Categoria INTEGER REFERENCES Racao_Categoria (id_Racao_Categoria) NOT NULL" +
+                ")";
+
+        db.execSQL(sqlAreiaCategoria);
+        db.execSQL(sqlAreia);
+        db.execSQL(sqlMedicamentoCategoria);
+        db.execSQL(sqlMedicamento);
+        db.execSQL(sqlRacaoCategoria);
+        db.execSQL(sqlRacao);
+        db.execSQL(sqlGato);
     }
-
-    public boolean desconectar() {
-
-        try {
-            if (!this.conexao.isClosed()) {
-                this.conexao.close();
-            }
-            System.out.println("desconectado!!!");
-        } catch (SQLException e) {
-
-            System.err.println(e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-
-    // Criar os statements para nossos sqls serem executados
-
-    public Statement criarStatement() {
-        try {
-            return this.conexao.createStatement();
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-    public PreparedStatement criarPreparedStatement(String sql) {
-        try {
-            return this.conexao.prepareStatement(sql);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 }

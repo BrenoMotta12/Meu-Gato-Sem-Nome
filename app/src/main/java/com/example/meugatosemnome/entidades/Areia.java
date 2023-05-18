@@ -1,3 +1,4 @@
+/*
 package com.example.meugatosemnome.entidades;
 
 import com.example.meugatosemnome.activities.MainActivity;
@@ -95,3 +96,4 @@ public class Areia extends ProdutosEstoque {
 
 
 }
+*/
