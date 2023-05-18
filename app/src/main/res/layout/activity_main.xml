@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#429db0"
+    android:visibility="visible"
+    tools:context=".activities.MainActivity"
+    tools:visibility="visible">
+
+    <ImageView
+        android:id="@+id/logoMGSN1"
+        android:layout_width="388dp"
+        android:layout_height="335dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="#00000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.063"
+        app:srcCompat="@drawable/logo1" />
+
+    <Button
+        android:id="@+id/buttonAnimais"
+        android:layout_width="348dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#f2af44"
+        android:fontFamily="sans-serif-medium"
+        android:text="Animais"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#ef758c"
+        app:color="#f2af44"
+        app:layout_constraintBottom_toTopOf="@+id/buttonDoacoes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoMGSN1" />
+
+    <Button
+        android:id="@+id/buttonRelatorios"
+        android:layout_width="348dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#f2af44"
+        android:fontFamily="sans-serif-medium"
+        android:text="Relatórios"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#ef758c"
+        app:color="#f2af44"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDoacoes" />
+
+    <Button
+        android:id="@+id/buttonDoacoes"
+        android:layout_width="348dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#f2af44"
+        android:fontFamily="sans-serif-medium"
+        android:text="Doações"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#ef758c"
+        app:color="#f2af44"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRelatorios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAnimais" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
