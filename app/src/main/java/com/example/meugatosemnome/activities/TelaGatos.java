@@ -1,7 +1,12 @@
 package com.example.meugatosemnome.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.meugatosemnome.R;
@@ -17,14 +22,36 @@ public class TelaGatos extends AppCompatActivity {
     private ListView listView;
     private ArrayList<Gato> itens;
     private GatoAdapter adapter;
+    private ImageButton buttonHome;
+    private Button buttonAddGato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_gatos);
 
-        ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
+        // BOTÃO QUE LEVA PARA A TELA DE ADIÇÃO DE GATOS
+        buttonAddGato = findViewById(R.id.buttonAddGato);
+        buttonAddGato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TelaGatos.this, TelaAdicionarGato.class);
+                startActivity(intent);
+            }
+        });
 
+        // BOTÃO QUE VOLTA PRA TELA INICIAL
+        buttonHome = findViewById(R.id.buttonHome);
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TelaGatos.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
+        /*
         Gato g1 = new Gato(1, true, "Raiva", true, 2, 7);
         Gato g2 = new Gato(2, false, null, false, 0, 9);
         Gato g3 = new Gato(3, true, "Gripe", false, 1, 5);
@@ -42,7 +69,7 @@ public class TelaGatos extends AppCompatActivity {
         Gato.adicionarGato(g6, conexaoSQLite);
         Gato.adicionarGato(g7, conexaoSQLite);
         Gato.adicionarGato(g8, conexaoSQLite);
-
+        */
         listView = findViewById(R.id.ListGatos);
         itens = (ArrayList<Gato>) Gato.buscaGato(conexaoSQLite);
         adapter = new GatoAdapter(TelaGatos.this, itens);

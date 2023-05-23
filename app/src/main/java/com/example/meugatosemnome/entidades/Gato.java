@@ -19,7 +19,6 @@ public class Gato {
     private boolean castrado;
     private int filhotes;
     private int idade;
-    // private byte[] foto;
 
     public Gato(){
     }
@@ -82,26 +81,13 @@ public class Gato {
         this.idade = idade;
     }
 
-    /*
-
-    public Drawable getFoto() {
-        return foto;
-    }
-
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
-    }
-
-     */
-
     // FIM GETTERS AND SETTERS
 
     // METODO QUE ADICIONA UM NOVO GATO
-
     public static void adicionarGato(Gato gato, ConexaoSQLite conexaoSQLite) {
         SQLiteDatabase db = conexaoSQLite.getWritableDatabase();
         ContentValues values = new ContentValues();
+
         values.put("id_Gato", gato.getId());
         values.put("doencas", gato.isDoencas());
         values.put("descricao_doencas", gato.getDescricaoDoencas());

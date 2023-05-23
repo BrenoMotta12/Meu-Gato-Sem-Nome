@@ -1,9 +1,7 @@
 package com.example.meugatosemnome.entidades;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.meugatosemnome.conexoes.ConexaoSQLite;
@@ -30,8 +28,7 @@ public class Medicamento extends ProdutosEstoque {
         this.nome = nome;
     }
 
-    public void adicionarProduto(Context context, Medicamento med) {
-        ConexaoSQLite conexaoSQLite = new ConexaoSQLite(context);
+    public void adicionarProduto(ConexaoSQLite conexaoSQLite, Medicamento med) {
         SQLiteDatabase db = conexaoSQLite.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -41,19 +38,12 @@ public class Medicamento extends ProdutosEstoque {
         values.put("valor", med.getValor());
         values.put("Categoria_id_Medicamento_Categoria", med.getIdCategoria());
 
-        long resultado = db.insert("Medicamento", null, values);
-        if (resultado != -1) {
-            System.out.println("Medicamento inserido!!!");
-        } else {
-            System.out.println("Medicamento não inserido!!!");
-        }
-
+        db.insert("Medicamento", null, values);
         db.close();
     }
 
-    public static List<Medicamento> buscaMedicamento(Context context) {
+    public static List<Medicamento> buscaMedicamento(ConexaoSQLite conexaoSQLite) {
         List<Medicamento> medicamentos = new ArrayList<>();
-        ConexaoSQLite conexaoSQLite = new ConexaoSQLite(context);
         SQLiteDatabase db = conexaoSQLite.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM Medicamento", null);
@@ -80,7 +70,6 @@ public class Medicamento extends ProdutosEstoque {
             cursor.close();
             db.close();
         }
-
         return medicamentos;
     }
 }

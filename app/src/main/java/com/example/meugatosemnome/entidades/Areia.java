@@ -1,17 +1,13 @@
-/*
 package com.example.meugatosemnome.entidades;
 
-import com.example.meugatosemnome.activities.MainActivity;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.example.meugatosemnome.conexoes.ConexaoSQLite;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 public class Areia extends ProdutosEstoque {
 
     public Areia() {
@@ -20,80 +16,46 @@ public class Areia extends ProdutosEstoque {
         super(id, idCategoria, quantidade, valor);
     }
 
-    public void adicionarProduto(Areia areia) {
-        ConexaoSQLite conexaoSQLite = new ConexaoSQLite();
-        conexaoSQLite.conectar();
-        String sqlInsert = "INSERT INTO Areia (" +
-                "id_Areia," +
-                "quantidade," +
-                "valor," +
-                "Categoria_id_Areia_Categoria" +
-                ") VALUES(?,?,?,?)";
+    public void adicionarProduto(ConexaoSQLite conexaoSQLite, Areia ar) {
+        SQLiteDatabase db = conexaoSQLite.getWritableDatabase();
 
-        PreparedStatement preparedStatement = conexaoSQLite.criarPreparedStatement(sqlInsert);
-        try {
-            preparedStatement.setInt(1, areia.getId());
-            preparedStatement.setDouble(2, areia.getQuantidade());
-            preparedStatement.setDouble(3, areia.getValor());
-            preparedStatement.setInt(4, areia.getIdCategoria());
+        ContentValues values = new ContentValues();
+        values.put("id_Areia", ar.getId());
+        values.put("quantidade", ar.getQuantidade());
+        values.put("valor", ar.getValor());
+        values.put("Categoria_id_Areia_Categoria", ar.getIdCategoria());
 
-            int resultado = preparedStatement.executeUpdate();
-
-            if (resultado == 1){
-                System.out.println("Areia inserida!!!");
-            } else {
-                System.out.println("Areia não inserida!!!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Areia não inserida!!!");
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            conexaoSQLite.desconectar();
-        }
+        db.insert("Areia", null, values);
+        db.close();
     }
 
-    public static List<Areia> buscaAreia() {
-        ResultSet resultSet = null;
-        Statement statement = null;
-        ConexaoSQLite conexaoSQLite = new ConexaoSQLite();
-        conexaoSQLite.conectar();
-        statement = conexaoSQLite.criarStatement();
+    public static List<Areia> buscaAreia(ConexaoSQLite conexaoSQLite) {
+        List<Areia> areia = new ArrayList<>();
+        SQLiteDatabase db = conexaoSQLite.getReadableDatabase();
 
-        String query = "SELECT * FROM Areia;";
-        List<Areia> areias = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM Areia", null);
         try {
-            resultSet = statement.executeQuery(query);
+            if (cursor.moveToFirst()) {
+                int columnIndexId = cursor.getColumnIndex("id_Areia");
+                int columnIndexQuantidade = cursor.getColumnIndex("quantidade");
+                int columnIndexValor = cursor.getColumnIndex("valor");
+                int columnIndexIdCategoria = cursor.getColumnIndex("Categoria_id_Areia_Categoria");
 
-            while (resultSet.next()) {
-                Areia areia = new Areia();
-                areia.setId(resultSet.getInt("id_Areia"));
-                areia.setQuantidade(resultSet.getDouble("quantidade"));
-                areia.setValor(resultSet.getDouble("valor"));
-                areia.setIdCategoria(resultSet.getInt("Categoria_id_Areia_Categoria"));
-                areias.add(areia);
+                do {
+                    Areia ar = new Areia();
+                    ar.setId(cursor.getInt(columnIndexId));
+                    ar.setQuantidade(cursor.getDouble(columnIndexQuantidade));
+                    ar.setValor(cursor.getDouble(columnIndexValor));
+                    ar.setIdCategoria(cursor.getInt(columnIndexIdCategoria));
+
+                    areia.add(ar);
+                } while (cursor.moveToNext());
             }
-        } catch (SQLException e) {
-            System.out.println("Erro na consulta");
         } finally {
-            try {
-                assert resultSet != null;
-                resultSet.close();
-                statement.close();
-                conexaoSQLite.desconectar();
-            } catch (SQLException ex){
-                System.out.println("Erro de fechamentos");
-            }
+            cursor.close();
+            db.close();
         }
-        return areias;
+
+        return areia;
     }
-
-
-
 }
-*/
