@@ -97,6 +97,7 @@ public class Gato {
 
         db.insert("Gato", null, values);
         db.close();
+        conexaoSQLite.close();
     }
 
     public static List<Gato> buscaGato(ConexaoSQLite conexaoSQLite) {
@@ -135,6 +136,7 @@ public class Gato {
 
         cursor.close();
         db.close();
+        conexaoSQLite.close();
 
         return gatos;
     }
