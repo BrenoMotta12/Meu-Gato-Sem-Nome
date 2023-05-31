@@ -1,21 +1,27 @@
+
 package com.example.meugatosemnome.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.SQLException;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.meugatosemnome.R;
 import com.example.meugatosemnome.conexoes.ConexaoSQLite;
 import com.example.meugatosemnome.entidades.Gato;
-
+import java.io.ByteArrayOutputStream;
 
 public class TelaAdicionarGato extends AppCompatActivity {
 
@@ -26,12 +32,17 @@ public class TelaAdicionarGato extends AppCompatActivity {
     private EditText editFilhotes;
     private EditText editIdade;
     private Button buttonSalvarGato;
+    private Button buttonSelecionarImagem;
+    private static final int REQUEST_CODE_SELECT_IMAGE = 1;
+    private ImageView imageAdicionarGato;
+    String imageString = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_adicionar_gato);
 
+        // ATRIBUIÇÕES DO FRONT
         buttonVoltarTelaGato = findViewById(R.id.buttonVoltarTelaGato);
         switchDoenca = findViewById(R.id.switchDoenca);
         editDescricaoDoenca = findViewById(R.id.editDescricaoDoenca);
@@ -39,7 +50,10 @@ public class TelaAdicionarGato extends AppCompatActivity {
         editFilhotes = findViewById(R.id.editFilhotes);
         editIdade = findViewById(R.id.editIdade);
         buttonSalvarGato = findViewById(R.id.buttonSalvarGato);
+        buttonSelecionarImagem = findViewById(R.id.buttonSelecionarImagem);
+        imageAdicionarGato = findViewById(R.id.imageAdicionarGato);
 
+        // BOTÃO VOLTAR
         buttonVoltarTelaGato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,22 +62,32 @@ public class TelaAdicionarGato extends AppCompatActivity {
             }
         });
 
+        // BOTÃO QUE ABRE A CAMERA DO DISPOSITIVO
+        buttonSelecionarImagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
+            }
+        });
+
+        // BOTÃO QUE SALVA O GATO NA DB VOLTA PARA A TELA DE GATOS
         buttonSalvarGato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean doenca;
+                String doenca;
                 if (switchDoenca.isChecked()) {
-                    doenca = true;
+                    doenca = "Sim";
                 } else {
-                    doenca = false;
+                    doenca = "Não";
                 }
-                boolean castrado;
-                if (switchDoenca.isChecked()) {
-                    castrado = true;
+                String castrado;
+                if (switchCastrado.isChecked()) {
+                    castrado = "Sim";
                 } else {
-                    castrado = false;
+                    castrado = "Não";
                 }
-                if (!(editFilhotes.getText().toString().equals("") || editIdade.getText().toString().equals(""))){
+                if (!(editFilhotes.getText().toString().equals("") || editIdade.getText().toString().equals(""))) {
 
                     try {
                         ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
@@ -73,22 +97,39 @@ public class TelaAdicionarGato extends AppCompatActivity {
                         gato.setCastrado(castrado);
                         gato.setFilhotes(Integer.valueOf(editFilhotes.getText().toString()));
                         gato.setIdade(Integer.valueOf(editIdade.getText().toString()));
-                        Gato.adicionarGato(gato,conexaoSQLite);
+                        gato.setImagemPath(imageString);
+
+                        conexaoSQLite.adicionarGato(gato);
+
                     } catch (SQLException e) {
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                     } finally {
-                        Intent intent = new Intent(TelaAdicionarGato.this, TelaGatos.class);
-                        startActivity(intent);
+                        finish();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show();
                 }
-
-
-
-
             }
         });
+    }
 
+    // FUNÇÃO PARA CAPTURAR A IMAGEM E TRANSFORMAR EM UMA STRING
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE) {
+            try {
+                Bitmap fotoRegistrada = (Bitmap) data.getExtras().get("data");
+                imageAdicionarGato.setImageBitmap(fotoRegistrada);
+                byte[] fotoemBytes;
+                ByteArrayOutputStream streamDaFotoEmBytes = new ByteArrayOutputStream();
+
+                fotoRegistrada.compress(Bitmap.CompressFormat.PNG, 70, streamDaFotoEmBytes);
+                fotoemBytes = streamDaFotoEmBytes.toByteArray();
+                imageString = android.util.Base64.encodeToString(fotoemBytes, Base64.DEFAULT);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

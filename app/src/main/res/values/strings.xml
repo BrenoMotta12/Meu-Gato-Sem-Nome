@@ -4,7 +4,6 @@
     <string name="n_o">Não</string>
     <string name="possui_alguma_doen_a">Possui alguma doença?</string>
     <string name="sim">Sim</string>
-    <string name="castrado">É castrado?</string>
     <string name="nome_da_doen_a">Nome da Doença:</string>
     <string name="n_mero_de_filhotes">Número de filhotes:</string>
     <string name="idade_em_anos">Idade em anos:</string>
@@ -12,4 +11,23 @@
     <string name="salvar">Salvar</string>
     <string name="adicionar_novo_animal">Adicionar Novo Animal</string>
     <string name="home_button">Home Button</string>
+    <string name="informa_es_do_animal">Informações do Animal</string>
+    <string name="op_es_do_animal">Opções do Animal</string>
+    <string name="selecione_uma_foto">Selecione uma foto</string>
+    <string name="fotodogato">foto do gato</string>
+    <string name="id">ID:</string>
+    <string name="doen_a">Doença?</string>
+    <string name="descri_o">Descrição:</string>
+    <string name="castrado">Castrado?</string>
+    <string name="n_filhotes">NºFilhotes:</string>
+    <string name="idade">Idade:</string>
+    <string name="quantidade_de_filhotes">Quantidade de filhotes:</string>
+    <string-array name="activity_opcao_gato_doenca_recebida_Spinner">
+        <item>Não possui nenhuma doença</item>
+        <item>Possui alguma doença</item>
+    </string-array>
+    <string-array name="activity_opcao_gato_castrado_recebido_Spinner">
+        <item>Não é castrado</item>
+        <item>É castrado</item>
+    </string-array>
 </resources>

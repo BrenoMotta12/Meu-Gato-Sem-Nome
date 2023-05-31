@@ -1,16 +1,19 @@
 package com.example.meugatosemnome.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 
 import com.example.meugatosemnome.R;
-import com.example.meugatosemnome.adapters.GatoAdapter;
+import com.example.meugatosemnome.adapters.RecyclerViewAdapter;
 import com.example.meugatosemnome.conexoes.ConexaoSQLite;
 import com.example.meugatosemnome.entidades.Gato;
 
@@ -19,9 +22,10 @@ import java.util.List;
 
 public class TelaGatos extends AppCompatActivity {
 
-    private ListView listView;
-    private ArrayList<Gato> itens;
-    private GatoAdapter adapter;
+    RecyclerView recyclerViewGatos;
+    RecyclerView.LayoutManager recyclerViewLayoutManager;
+    RecyclerViewAdapter recyclerViewAdapter;
+    Context context;
     private ImageButton buttonHome;
     private Button buttonAddGato;
 
@@ -29,6 +33,11 @@ public class TelaGatos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_gatos);
+        context = getApplicationContext();
+
+        recyclerViewGatos = findViewById(R.id.recyclerViewGatos);
+        buscaNoBanco();
+
 
         // BOTÃO QUE LEVA PARA A TELA DE ADIÇÃO DE GATOS
         buttonAddGato = findViewById(R.id.buttonAddGato);
@@ -40,6 +49,7 @@ public class TelaGatos extends AppCompatActivity {
             }
         });
 
+
         // BOTÃO QUE VOLTA PRA TELA INICIAL
         buttonHome = findViewById(R.id.buttonHome);
         buttonHome.setOnClickListener(new View.OnClickListener() {
@@ -50,32 +60,57 @@ public class TelaGatos extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void buscaNoBanco() {
         ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
-        /*
-        Gato g1 = new Gato(1, true, "Raiva", true, 2, 7);
-        Gato g2 = new Gato(2, false, null, false, 0, 9);
-        Gato g3 = new Gato(3, true, "Gripe", false, 1, 5);
-        Gato g4 = new Gato(4, true, "Diabetes", true, 0, 3);
-        Gato g5 = new Gato(5, false, null, false, 0, 2);
-        Gato g6 = new Gato(6, true, "Alergia", true, 3, 8);
-        Gato g7 = new Gato(7, false, null, false, 0, 6);
-        Gato g8 = new Gato(8, true, "Obesidade", true, 2, 4);
+        List<Gato> gatos = conexaoSQLite.buscaGato();
 
-        Gato.adicionarGato(g1, conexaoSQLite);
-        Gato.adicionarGato(g2, conexaoSQLite);
-        Gato.adicionarGato(g3, conexaoSQLite);
-        Gato.adicionarGato(g4, conexaoSQLite);
-        Gato.adicionarGato(g5, conexaoSQLite);
-        Gato.adicionarGato(g6, conexaoSQLite);
-        Gato.adicionarGato(g7, conexaoSQLite);
-        Gato.adicionarGato(g8, conexaoSQLite);
-        */
-        listView = findViewById(R.id.ListGatos);
-        itens = (ArrayList<Gato>) Gato.buscaGato(conexaoSQLite);
-        adapter = new GatoAdapter(TelaGatos.this, itens);
-        listView.setAdapter(adapter);
+        List<String> ids = new ArrayList<String>();
+        List<String> doencas = new ArrayList<String>();
+        List<String> descricoes = new ArrayList<String>();
+        List<String> castrados = new ArrayList<String>();
+        List<String> filhotes = new ArrayList<String>();
+        List<String> idades = new ArrayList<String>();
+        List<String> fotos = new ArrayList<String>();
 
+        for (Gato gatoBuscado : gatos) {
+            ids.add(String.valueOf(gatoBuscado.getId()));
+            doencas.add(String.valueOf(gatoBuscado.getDoencas()));
+            descricoes.add(gatoBuscado.getDescricaoDoencas());
+            castrados.add(String.valueOf(gatoBuscado.getCastrado()));
+            filhotes.add(String.valueOf(gatoBuscado.getFilhotes()));
+            idades.add(String.valueOf(gatoBuscado.getIdade()));
+            fotos.add(gatoBuscado.getImagemPath());
+        }
 
+        String[] dados_ids = new String[] {};
+        String[] dados_doencas = new String[] {};
+        String[] dados_descricoes = new String[] {};
+        String[] dados_castrados = new String[] {};
+        String[] dados_filhotes = new String[] {};
+        String[] dados_idades = new String[] {};
+        String[] dados_fotos = new String[] {};
 
+        dados_ids = ids.toArray(new String[0]);
+        dados_doencas = doencas.toArray(new String[0]);
+        dados_descricoes = descricoes.toArray(new String[0]);
+        dados_castrados = castrados.toArray(new String[0]);
+        dados_filhotes = filhotes.toArray(new String[0]);
+        dados_idades = idades.toArray(new String[0]);
+        dados_fotos = fotos.toArray(new String[0]);
+
+        recyclerViewLayoutManager = new LinearLayoutManager(context);
+        recyclerViewGatos.setLayoutManager(recyclerViewLayoutManager);
+        recyclerViewAdapter = new RecyclerViewAdapter(context, dados_ids, dados_doencas,
+                dados_descricoes, dados_castrados, dados_filhotes, dados_idades, dados_fotos);
+        conexaoSQLite.close();
+        recyclerViewGatos.setAdapter(recyclerViewAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        buscaNoBanco();
     }
 }

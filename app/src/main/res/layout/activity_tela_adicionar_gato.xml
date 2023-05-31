@@ -23,9 +23,10 @@
             android:padding="16dp"
             app:srcCompat="@drawable/botaovoltar"
             tools:ignore="TouchTargetSizeCheck" />
+
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
+            android:layout_width="347dp"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
             android:text="@string/adicionar_novo_animal"
@@ -33,6 +34,30 @@
             android:textColor="#EF758C"
             android:textSize="29sp" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageAdicionarGato"
+        android:layout_width="264dp"
+        android:layout_height="215dp"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/iconegato" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <Button
+        android:id="@+id/buttonSelecionarImagem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="#EF758C"
+        android:fontFamily="serif"
+        android:gravity="center_horizontal"
+        android:text="@string/selecione_uma_foto"
+        android:textColor="#429db0"
+        android:textSize="18sp" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -164,8 +189,8 @@
         android:fontFamily="serif"
         android:textSize="34sp"
         android:gravity="center_horizontal"
-        android:text="@string/salvar"
-        android:textColor="#429db0" />
+        android:textColor="#429db0"
+        android:text="@string/salvar"/>
 
 
 </LinearLayout>

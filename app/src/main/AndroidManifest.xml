@@ -13,6 +13,13 @@
         android:theme="@style/Theme.MeuGatoSemNome"
         tools:targetApi="31">
         <activity
+            android:name=".activities.TelaGatos"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.TelaOpcaoGato"
+            android:exported="false" />
+        <activity
             android:name=".activities.TelaAdicionarGato"
             android:exported="false" />
         <activity
@@ -21,10 +28,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TelaRelatorios"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.TelaGatos"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
