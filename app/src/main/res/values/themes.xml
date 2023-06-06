@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.MeuGatoSemNome" parent="Base.Theme.MeuGatoSemNome" />
+
+    <style name="SpinnerPersolanizado" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

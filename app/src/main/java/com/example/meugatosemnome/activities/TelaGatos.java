@@ -1,13 +1,13 @@
 package com.example.meugatosemnome.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -150,6 +150,8 @@ public class TelaGatos extends AppCompatActivity {
                 dados_descricoes, dados_castrados, dados_filhotes, dados_idades, dados_fotos);
         conexaoSQLite.close();
         recyclerViewGatos.setAdapter(recyclerViewAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewGatos.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerViewGatos.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
