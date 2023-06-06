@@ -37,13 +37,13 @@
 
     </LinearLayout>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/activity_opcao_gato_icone"
         android:layout_width="218dp"
         android:layout_height="202dp"
         android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/iconegato"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/imagem_do_gato"
+        android:src="@drawable/iconegato" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,8 +51,8 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -64,10 +64,16 @@
                 android:textColor="#000000"
                 android:textSize="24sp" />
 
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
             <TextView
                 android:id="@+id/activity_opcao_gato_id_recebido_TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="serif"
                 android:textColor="#000000"
                 android:textSize="24sp" />
         </LinearLayout>

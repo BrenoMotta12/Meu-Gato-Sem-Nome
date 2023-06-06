@@ -35,34 +35,24 @@
             android:textSize="29sp" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageAdicionarGato"
-        android:layout_width="264dp"
-        android:layout_height="215dp"
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/activity_tela_adicionar_gato_icone"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/iconegato" />
+        android:clickable="true"
+        android:contentDescription="@string/imagem"
+        android:src="@drawable/iconegato"
+        app:maxImageSize="60dp" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="30dp" />
-
-    <Button
-        android:id="@+id/buttonSelecionarImagem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="#EF758C"
-        android:fontFamily="serif"
-        android:gravity="center_horizontal"
-        android:text="@string/selecione_uma_foto"
-        android:textColor="#429db0"
-        android:textSize="18sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:backgroundTint="#EF758C"
-        android:visibility="visible" />
 
     <TextView
         android:layout_width="match_parent"
@@ -82,8 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
-            android:textColor="#000000"
-            android:text="@string/n_o" />
+            android:text="@string/n_o"
+            android:textColor="#000000" />
 
 
         <Switch
@@ -97,8 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
-            android:textColor="#000000"
-            android:text="@string/sim" />
+            android:text="@string/sim"
+            android:textColor="#000000" />
     </LinearLayout>
 
     <EditText
@@ -106,9 +96,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textColor="#000000"
         android:hint="@string/nome_da_doen_a"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textColor="#000000" />
 
     <Space
         android:layout_width="match_parent"
@@ -117,10 +107,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="#000000"
-        android:text="@string/castrado"
         android:fontFamily="serif"
+        android:gravity="center_horizontal"
+        android:text="@string/castrado"
+        android:textColor="#000000"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -132,8 +122,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
-            android:textColor="#000000"
-            android:text="@string/n_o" />
+            android:text="@string/n_o"
+            android:textColor="#000000" />
 
         <Switch
             android:id="@+id/switchCastrado"
@@ -146,8 +136,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
-            android:textColor="#000000"
-            android:text="@string/sim" />
+            android:text="@string/sim"
+            android:textColor="#000000" />
     </LinearLayout>
 
     <Space
@@ -158,12 +148,12 @@
         android:id="@+id/editFilhotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:fontFamily="serif"
         android:gravity="center_horizontal"
         android:hint="@string/n_mero_de_filhotes"
         android:inputType="number"
-        android:fontFamily="serif"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textColor="#000000" />
 
     <Space
         android:layout_width="match_parent"
@@ -173,12 +163,12 @@
         android:id="@+id/editIdade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:fontFamily="serif"
-        android:textColor="#000000"
+        android:gravity="center_horizontal"
         android:hint="@string/idade_em_anos"
         android:inputType="number"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/buttonSalvarGato"
@@ -187,10 +177,10 @@
         android:layout_gravity="center_horizontal"
         android:backgroundTint="#EF758C"
         android:fontFamily="serif"
-        android:textSize="34sp"
         android:gravity="center_horizontal"
+        android:text="@string/salvar"
         android:textColor="#429db0"
-        android:text="@string/salvar"/>
+        android:textSize="34sp" />
 
 
 </LinearLayout>

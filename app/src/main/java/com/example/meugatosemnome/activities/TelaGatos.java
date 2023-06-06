@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.example.meugatosemnome.R;
 import com.example.meugatosemnome.adapters.RecyclerViewAdapter;
@@ -28,6 +30,7 @@ public class TelaGatos extends AppCompatActivity {
     Context context;
     private ImageButton buttonHome;
     private Button buttonAddGato;
+    Spinner spinner_filtro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +38,51 @@ public class TelaGatos extends AppCompatActivity {
         setContentView(R.layout.activity_tela_gatos);
         context = getApplicationContext();
 
-        recyclerViewGatos = findViewById(R.id.recyclerViewGatos);
-        buscaNoBanco();
+        spinner_filtro = findViewById(R.id.spinner_filtro);
 
+        recyclerViewGatos = findViewById(R.id.recyclerViewGatos);
+        buscaNoBanco("");
+
+        spinner_filtro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        buscaNoBanco("");
+                        break;
+                    case 1:
+                        buscaNoBanco("WHERE doencas = 'Sim' ");
+                        break;
+                    case 2:
+                        buscaNoBanco("WHERE doencas = 'Não' ");
+                        break;
+                    case 3:
+                        buscaNoBanco("WHERE castrado = 'Sim' ");
+                        break;
+                    case 4:
+                        buscaNoBanco("WHERE castrado = 'Não' ");
+                        break;
+                    case 5:
+                        buscaNoBanco("WHERE filhotes > 0 ");
+                        break;
+                    case 6:
+                        buscaNoBanco("WHERE filhotes = 0 ");
+                        break;
+                    case 7:
+                        buscaNoBanco("WHERE idade < 1 ");
+                        break;
+                    case 8:
+                        buscaNoBanco("WHERE idade >= 1 ");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         // BOTÃO QUE LEVA PARA A TELA DE ADIÇÃO DE GATOS
         buttonAddGato = findViewById(R.id.buttonAddGato);
@@ -62,10 +107,9 @@ public class TelaGatos extends AppCompatActivity {
 
     }
 
-    private void buscaNoBanco() {
+    private void buscaNoBanco(String filtro) {
         ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
-        List<Gato> gatos = conexaoSQLite.buscaGato();
-
+        List<Gato> gatos = conexaoSQLite.buscaGato(filtro);
         List<String> ids = new ArrayList<String>();
         List<String> doencas = new ArrayList<String>();
         List<String> descricoes = new ArrayList<String>();
@@ -111,6 +155,6 @@ public class TelaGatos extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        buscaNoBanco();
+        buscaNoBanco("");
     }
 }

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.meugatosemnome.entidades.Gato;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ConexaoSQLite extends SQLiteOpenHelper {
 
     private static final String NOME_BANCO_DE_DADOS = "db_mgsn.db";
-    private static final int VERSAO_BANCO_DE_DADOS = 16;
+    private static final int VERSAO_BANCO_DE_DADOS = 18;
 
     public ConexaoSQLite(Context context) {
         super(context, NOME_BANCO_DE_DADOS, null, VERSAO_BANCO_DE_DADOS);
@@ -56,7 +57,7 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
                 "castrado TEXT," +
                 "filhotes INTEGER," +
                 "idade INTEGER," +
-                "imagem_path TEXT" +
+                "imagem_path String" +
                 ");";
 
         String sqlRacaoCategoria = "CREATE TABLE IF NOT EXISTS Racao_Categoria (" +
@@ -110,27 +111,33 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
 
     // METODO QUE ADICIONA UM NOVO GATO
     public void adicionarGato(Gato gato) {
-
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put("id_Gato", gato.getId());
         values.put("doencas", gato.getDoencas());
         values.put("descricao_doencas", gato.getDescricaoDoencas());
         values.put("castrado", gato.getCastrado());
         values.put("filhotes", gato.getFilhotes());
         values.put("idade", gato.getIdade());
-        values.put("imagem_path", gato.getImagemPath());
+        if (!gato.getImagemPath().equals("") && gato.getImagemPath() != null) {
+            values.put("imagem_path", gato.getImagemPath());
+        } else {
+            values.put("imagem_path", "");
+        }
 
-        db.insert("Gato", null, values);
+        long rowId = db.insertWithOnConflict("Gato", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+
+        if (rowId == -1) {
+            db.update("Gato", values, "id_Gato = ?", new String[]{String.valueOf(gato.getId())});
+        }
     }
 
-    public List<Gato> buscaGato() {
+    public List<Gato> buscaGato(String filtro) {
 
         List<Gato> gatos = new ArrayList<Gato>();
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM Gato", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM Gato " + filtro + "ORDER BY id_Gato;", null);
         while (cursor.moveToNext()) {
             int idIndex = cursor.getColumnIndex("id_Gato");
             int doencasIndex = cursor.getColumnIndex("doencas");
@@ -146,7 +153,7 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
             String castrado = cursor.getString(castradoIndex);
             Integer filhotes = cursor.getInt(filhotesIndex);
             Integer idade = cursor.getInt(idadeIndex);
-            //String imagem_path = cursor.getString(imagem_pathIndex);
+            String imagem_path = cursor.getString(imagem_pathIndex);
 
             Gato gato = new Gato();
             gato.setId(id);
@@ -155,14 +162,14 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
             gato.setCastrado(castrado);
             gato.setFilhotes(filhotes);
             gato.setIdade(idade);
-            //gato.setImagemPath(imagem_path);
+            gato.setImagemPath(imagem_path);
 
             gatos.add(gato);
         }
         cursor.close();
         return gatos;
     }
-    public void excluirGato(String id) {
+    public void excluirGato(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
         String sql = "DELETE FROM Gato WHERE id_Gato = " + "'" + id + "'";

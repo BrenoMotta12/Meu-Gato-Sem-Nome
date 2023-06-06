@@ -22,12 +22,28 @@
     <string name="n_filhotes">NºFilhotes:</string>
     <string name="idade">Idade:</string>
     <string name="quantidade_de_filhotes">Quantidade de filhotes:</string>
+    <string name="imagem">imagem</string>
+    <string name="imagem_do_gato">Imagem do gato</string>
+
     <string-array name="activity_opcao_gato_doenca_recebida_Spinner">
         <item>Não possui nenhuma doença</item>
         <item>Possui alguma doença</item>
     </string-array>
+
     <string-array name="activity_opcao_gato_castrado_recebido_Spinner">
         <item>Não é castrado</item>
         <item>É castrado</item>
+    </string-array>
+
+    <string-array name="spinner_filtro">
+        <item>Redefinir filtros</item>
+        <item>Com doenças</item>
+        <item>Sem doenças</item>
+        <item>Castrados</item>
+        <item>Não castrados</item>
+        <item>Com filhotes</item>
+        <item>Sem filhotes</item>
+        <item>Com menos de 1 ano</item>
+        <item>Com mais de 1 ano</item>
     </string-array>
 </resources>

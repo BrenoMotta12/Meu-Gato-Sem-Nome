@@ -48,19 +48,44 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#EF758C"
+            android:fontFamily="serif"
             android:text="Adicionar Gato"
             android:textColor="#429db0"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:cornerRadius="16dp" />
 
-        <Button
-            android:id="@+id/buttonFiltroGato"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:backgroundTint="#EF758C"
-            android:text="Filtros"
-            android:textColor="#429db0"
-            android:textSize="20sp" />
+            app:cardBackgroundColor="#EF758C"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="  Filtros:"
+                    android:textColor="#429db0"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_filtro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/spinner_filtro"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

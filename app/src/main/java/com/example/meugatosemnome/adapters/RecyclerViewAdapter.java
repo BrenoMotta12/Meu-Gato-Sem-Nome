@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +19,8 @@ import com.example.meugatosemnome.activities.TelaOpcaoGato;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -57,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView txtCastrado;
         public TextView txtFilhotes;
         public TextView txtIdade;
-        public ImageView imgGato;
+        public CircleImageView imgGato;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -102,11 +103,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.txtFilhotes.setText(filhotes.get(position));
         holder.txtIdade.setText(idades.get(position));
         if (fotos.get(position) != null) {
-            byte[] imagemEmBytes = Base64.decode(fotos.get(position), Base64.DEFAULT);
-            Bitmap imagemDecodificada = BitmapFactory.decodeByteArray(imagemEmBytes, 0, imagemEmBytes.length);
-            holder.imgGato.setImageBitmap(imagemDecodificada);
-        } else {
-            holder.imgGato.setImageResource(R.drawable.iconegato);
+            if (!fotos.get(position).equals("")) {
+                byte[] imagemEmBytes;
+                imagemEmBytes = Base64.decode(fotos.get(holder.getAdapterPosition()), Base64.DEFAULT);
+                Bitmap imagemDecodificada = BitmapFactory.decodeByteArray(imagemEmBytes, 0, imagemEmBytes.length);
+                holder.imgGato.setImageBitmap(imagemDecodificada);
+            } else {
+                holder.imgGato.setImageResource(R.drawable.iconegato);
+            }
         }
 
         viewOnCreate.setOnClickListener(new View.OnClickListener() {

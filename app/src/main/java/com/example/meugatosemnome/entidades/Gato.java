@@ -8,7 +8,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 
-public class Gato implements Parcelable {
+public class Gato {
 
     private Integer id;
     private String doencas;
@@ -23,39 +23,6 @@ public class Gato implements Parcelable {
 
 
     // INICIO GETTERS AND SETTERS
-
-    protected Gato(Parcel in) {
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readInt();
-        }
-        doencas = in.readString();
-        descricaoDoencas = in.readString();
-        castrado = in.readString();
-        if (in.readByte() == 0) {
-            filhotes = null;
-        } else {
-            filhotes = in.readInt();
-        }
-        if (in.readByte() == 0) {
-            idade = null;
-        } else {
-            idade = in.readInt();
-        }
-    }
-
-    public static final Creator<Gato> CREATOR = new Creator<Gato>() {
-        @Override
-        public Gato createFromParcel(Parcel in) {
-            return new Gato(in);
-        }
-
-        @Override
-        public Gato[] newArray(int size) {
-            return new Gato[size];
-        }
-    };
 
     public Integer getId() {
         return id;
@@ -106,7 +73,6 @@ public class Gato implements Parcelable {
     }
 
 
-
     public String getImagemPath() {
         return imagemPath;
     }
@@ -114,15 +80,5 @@ public class Gato implements Parcelable {
     public void setImagemPath(String imagemPath) {
         this.imagemPath = imagemPath;
     }
-
-    // FIM GETTERS AND SETTERS
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-    }
 }
+    // FIM GETTERS AND SETTERS
