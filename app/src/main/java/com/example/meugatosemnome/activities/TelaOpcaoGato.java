@@ -35,13 +35,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TelaOpcaoGato extends AppCompatActivity {
 
     ImageButton activity_opcao_gato_buttonVoltarTelaGato;
+
     Button activity_opcao_gato_buttonAtualizarGato, activity_opcao_gato_buttonExcluirGato;
+
     CircleImageView activity_opcao_gato_icone;
+
     EditText activity_opcao_gato_descricao_recebida_EditText, activity_opcao_gato_filhotes_recebido_EditText,
             activity_opcao_gato_idade_recebida_EditText;
+
     TextView activity_opcao_gato_id_recebido_TextView;
-    Spinner activity_opcao_gato_doenca_recebida_Spinner, activity_opcao_gato_castrado_recebido_Spinner;
-    String doenca, castrado, imageString;
+
+    Spinner activity_opcao_gato_sexo_recebido_Spinner,
+            activity_opcao_gato_doenca_recebida_Spinner,
+            activity_opcao_gato_castrado_recebido_Spinner;
+
+    String doenca, castrado, sexo, imageString;
+
     int idAtual;
     Bitmap fotoRegistrada;
 
@@ -53,6 +62,7 @@ public class TelaOpcaoGato extends AppCompatActivity {
 
         // LIGAÇÃO BACK-FRONT
         activity_opcao_gato_icone = findViewById(R.id.activity_opcao_gato_icone);
+        activity_opcao_gato_sexo_recebido_Spinner = findViewById(R.id.activity_opcao_gato_sexo_recebido_Spinner);
         activity_opcao_gato_id_recebido_TextView = findViewById(R.id.activity_opcao_gato_id_recebido_TextView);
         activity_opcao_gato_doenca_recebida_Spinner = findViewById(R.id.activity_opcao_gato_doenca_recebida_Spinner);
         activity_opcao_gato_descricao_recebida_EditText = findViewById(R.id.activity_opcao_gato_descricao_recebida_EditText);
@@ -60,27 +70,24 @@ public class TelaOpcaoGato extends AppCompatActivity {
         activity_opcao_gato_filhotes_recebido_EditText = findViewById(R.id.activity_opcao_gato_filhotes_recebido_EditText);
         activity_opcao_gato_idade_recebida_EditText = findViewById(R.id.activity_opcao_gato_idade_recebida_EditText);
 
+        // LIGAÇÃO BACK-FRONT DOS BOTÕES
+        activity_opcao_gato_buttonVoltarTelaGato = findViewById(R.id.buttonVoltarTelaGato);
+        activity_opcao_gato_buttonAtualizarGato = findViewById(R.id.activity_opcao_gato_buttonAtualizarGato);
+        activity_opcao_gato_buttonExcluirGato = findViewById(R.id.activity_opcao_gato_buttonExcluirGato);
+
         // SETANDO A IMAGEM
         imageString = intent.getStringExtra("foto");
         Bitmap imagemDecodificada;
         if (intent.getStringExtra("foto") != null) {
             if (!intent.getStringExtra("foto").equals("")) {
-                Log.d("Entrou", "no segundo if");
                 byte[] imagemEmBytes = Base64.decode(intent.getStringExtra("foto"), Base64.DEFAULT);
                 imagemDecodificada = BitmapFactory.decodeByteArray(imagemEmBytes, 0, imagemEmBytes.length);
                 activity_opcao_gato_icone.setImageBitmap(imagemDecodificada);
             } else {
-                Log.d("Entrou", "no else");
                 activity_opcao_gato_icone.setImageResource(R.drawable.iconegato);
             }
         }
 
-
-
-        // LIGAÇÃO BACK-FRONT DOS BOTÕES
-        activity_opcao_gato_buttonVoltarTelaGato = findViewById(R.id.buttonVoltarTelaGato);
-        activity_opcao_gato_buttonAtualizarGato = findViewById(R.id.activity_opcao_gato_buttonAtualizarGato);
-        activity_opcao_gato_buttonExcluirGato = findViewById(R.id.activity_opcao_gato_buttonExcluirGato);
 
         // BOTÃO PARA ABRIR A CAMERA DO DISPOSITIVO
 
@@ -94,6 +101,25 @@ public class TelaOpcaoGato extends AppCompatActivity {
 
         // SETANDO O ID DO GATO ATUAL PARA AUXILIAR NO CODIGO
         idAtual = Integer.parseInt(intent.getStringExtra("id"));
+
+
+        // IF PARA O SPINNER SEXOS
+        if (intent.getStringExtra("sexos").equals("Macho")) {
+            activity_opcao_gato_sexo_recebido_Spinner.setSelection(0);
+            sexo = "Macho";
+        } else {
+            activity_opcao_gato_sexo_recebido_Spinner.setSelection(1);
+            sexo = "Fêmea";
+        }
+        activity_opcao_gato_sexo_recebido_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sexo = position == 0 ? "Macho" : "Fêmea";
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         // IF PARA O SPINNER DOENÇAS
         if (intent.getStringExtra("doencas").equals("Sim")) {
@@ -196,6 +222,7 @@ public class TelaOpcaoGato extends AppCompatActivity {
         ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
         Gato gato = new Gato();
         gato.setId(idAtual);
+        gato.setSexo(sexo);
         gato.setDoencas(doenca);
         gato.setDescricaoDoencas((activity_opcao_gato_descricao_recebida_EditText.getText().toString()));
         gato.setCastrado(castrado);

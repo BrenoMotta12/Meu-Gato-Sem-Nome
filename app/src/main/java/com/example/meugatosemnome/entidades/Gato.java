@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 public class Gato {
 
     private Integer id;
+    private String sexo;
     private String doencas;
     private String descricaoDoencas;
     private String castrado;
@@ -18,9 +19,9 @@ public class Gato {
     private Integer idade;
     private String imagemPath;
 
+
     public Gato() {
     }
-
 
     // INICIO GETTERS AND SETTERS
 
@@ -30,6 +31,14 @@ public class Gato {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
     public String getDoencas() {

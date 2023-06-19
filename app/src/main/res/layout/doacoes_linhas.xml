@@ -18,11 +18,10 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgGato"
-                android:layout_width="132dp"
+                android:id="@+id/imgDoacoes"
+                android:layout_width="81dp"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/fotodogato"
-                android:src="@drawable/iconegato" />
+                android:contentDescription="@string/fotodogato" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,43 +32,25 @@
                     android:id="@+id/txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/id" />
+                    android:text="ID:" />
 
                 <TextView
                     android:id="@+id/txt7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/sexo" />
+                    android:text="Produto:" />
 
                 <TextView
                     android:id="@+id/txt2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/doen_a" />
+                    android:text="Nome:" />
 
                 <TextView
                     android:id="@+id/txt3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/descri_o" />
-
-                <TextView
-                    android:id="@+id/txt4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/castrado" />
-
-                <TextView
-                    android:id="@+id/txt5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/n_filhotes" />
-
-                <TextView
-                    android:id="@+id/txt6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/idade" />
+                    android:text="Quantidade:" />
 
             </LinearLayout>
 
@@ -90,41 +71,20 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/sexo"
+                    android:id="@+id/categoria"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/doenca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/descricao"
+                    android:id="@+id/nome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/castrado"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/filhotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/idade"
+                    android:id="@+id/quantidade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""

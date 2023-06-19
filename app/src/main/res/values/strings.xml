@@ -24,6 +24,15 @@
     <string name="quantidade_de_filhotes">Quantidade de filhotes:</string>
     <string name="imagem">imagem</string>
     <string name="imagem_do_gato">Imagem do gato</string>
+    <string name="sexo">Sexo:</string>
+    <string name="qual_o_sexo_do_gato">Qual o sexo do gato?</string>
+    <string name="f_mea">Fêmea</string>
+    <string name="doa_es">Doações</string>
+
+    <string-array name="activity_opcao_gato_sexo_recebido_Spinner">
+        <item>Macho</item>
+        <item>Fêmea</item>
+    </string-array>
 
     <string-array name="activity_opcao_gato_doenca_recebida_Spinner">
         <item>Não possui nenhuma doença</item>
@@ -37,6 +46,8 @@
 
     <string-array name="spinner_filtro">
         <item>Redefinir filtros</item>
+        <item>Machos</item>
+        <item>Fêmeas</item>
         <item>Com doenças</item>
         <item>Sem doenças</item>
         <item>Castrados</item>

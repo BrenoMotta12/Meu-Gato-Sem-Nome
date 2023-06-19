@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +21,13 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapterGatos extends RecyclerView.Adapter<RecyclerViewAdapterGatos.ViewHolder> {
 
     View viewOnCreate;
     ViewHolder viewHolderLocal;
     Context context;
     List<String> ids = new ArrayList<String>();
+    List<String> sexos = new ArrayList<String>();
     List<String> doencas = new ArrayList<String>();
     List<String> descricoes = new ArrayList<String>();
     List<String> castrados = new ArrayList<String>();
@@ -36,12 +36,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     List<String> fotos = new ArrayList<String>();
 
 
-    public RecyclerViewAdapter(Context contextRecebido, String[] idsRecebidos,
-                               String[] doencasRecebidas, String[] descricoesRecebidas,
-                               String[] castradosRecebidos, String[] filhotesRecebidos,
-                               String[] idadesRecebidas, String[] fotosRecebidas) {
+    public RecyclerViewAdapterGatos(Context contextRecebido,
+                                    String[] idsRecebidos,
+                                    String[] sexosRecebidos,
+                                    String[] doencasRecebidas,
+                                    String[] descricoesRecebidas,
+                                    String[] castradosRecebidos,
+                                    String[] filhotesRecebidos,
+                                    String[] idadesRecebidas,
+                                    String[] fotosRecebidas) {
         context = contextRecebido;
         ids.addAll(Arrays.asList(idsRecebidos));
+        sexos.addAll(Arrays.asList(sexosRecebidos));
         doencas.addAll(Arrays.asList(doencasRecebidas));
         descricoes.addAll(Arrays.asList(descricoesRecebidas));
         castrados.addAll(Arrays.asList(castradosRecebidos));
@@ -53,6 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public TextView txtId;
+        public TextView txtSexo;
         public TextView txtdoencas;
         public TextView txtDescricao;
         public TextView txtCastrado;
@@ -64,19 +71,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             txtId = itemView.findViewById(R.id.id);
+            txtSexo = itemView.findViewById(R.id.sexo);
             txtdoencas = itemView.findViewById(R.id.doenca);
             txtDescricao = itemView.findViewById(R.id.descricao);
             txtCastrado = itemView.findViewById(R.id.castrado);
             txtFilhotes = itemView.findViewById(R.id.filhotes);
             txtIdade = itemView.findViewById(R.id.idade);
             imgGato = itemView.findViewById(R.id.imgGato);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("Teste:", "click");
-                }
-            });
         }
 
         @Override
@@ -88,15 +89,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @NonNull
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewAdapterGatos.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         viewOnCreate = LayoutInflater.from(parent.getContext()).inflate(R.layout.gato_linhas, parent, false);
         viewHolderLocal = new ViewHolder(viewOnCreate);
         return viewHolderLocal;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewAdapterGatos.ViewHolder holder, int position) {
         holder.txtId.setText(ids.get(position));
+        holder.txtSexo.setText(sexos.get(position));
         holder.txtdoencas.setText(doencas.get(position));
         holder.txtDescricao.setText(descricoes.get(position));
         holder.txtCastrado.setText(castrados.get(position));
@@ -120,6 +122,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 Intent intent = new Intent(context, TelaOpcaoGato.class);
                 intent.putExtra("id", ids.get(adapterPosition));
+                intent.putExtra("sexos", sexos.get(adapterPosition));
                 intent.putExtra("doencas", doencas.get(adapterPosition));
                 intent.putExtra("descricao", descricoes.get(adapterPosition));
                 intent.putExtra("castrado", castrados.get(adapterPosition));

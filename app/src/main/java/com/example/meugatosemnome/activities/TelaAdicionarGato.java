@@ -9,7 +9,6 @@ import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TelaAdicionarGato extends AppCompatActivity {
 
     private ImageButton buttonVoltarTelaGato;
+    private Switch switchSexo;
     private Switch switchDoenca;
     private EditText editDescricaoDoenca;
     private Switch switchCastrado;
@@ -45,6 +45,7 @@ public class TelaAdicionarGato extends AppCompatActivity {
 
         // ATRIBUIÇÕES DO FRONT
         buttonVoltarTelaGato = findViewById(R.id.buttonVoltarTelaGato);
+        switchSexo = findViewById(R.id.switchSexo);
         switchDoenca = findViewById(R.id.switchDoenca);
         editDescricaoDoenca = findViewById(R.id.editDescricaoDoenca);
         switchCastrado = findViewById(R.id.switchCastrado);
@@ -76,6 +77,13 @@ public class TelaAdicionarGato extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String sexo;
+                if (switchSexo.isChecked()) {
+                    sexo = "Fêmea";
+                } else {
+                    sexo = "Macho";
+                }
+
                 String doenca;
                 if (switchDoenca.isChecked()) {
                     doenca = "Sim";
@@ -93,7 +101,7 @@ public class TelaAdicionarGato extends AppCompatActivity {
                 if (!(editFilhotes.getText().toString().equals("") || editIdade.getText().toString().equals(""))) {
 
                     try {
-                        adicionaGato(doenca, castrado);
+                        adicionaGato(doenca, castrado, sexo);
                     } catch (SQLException e) {
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                     } finally {
@@ -107,9 +115,10 @@ public class TelaAdicionarGato extends AppCompatActivity {
         });
     }
 
-    private void adicionaGato(String doenca, String castrado) {
+    private void adicionaGato(String doenca, String castrado, String sexo) {
         ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
         Gato gato = new Gato();
+        gato.setSexo(sexo);
         gato.setDoencas(doenca);
         gato.setDescricaoDoencas((editDescricaoDoenca.getText().toString()));
         gato.setCastrado(castrado);

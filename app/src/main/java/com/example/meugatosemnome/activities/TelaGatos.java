@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.meugatosemnome.R;
-import com.example.meugatosemnome.adapters.RecyclerViewAdapter;
+import com.example.meugatosemnome.adapters.RecyclerViewAdapterGatos;
 import com.example.meugatosemnome.conexoes.ConexaoSQLite;
 import com.example.meugatosemnome.entidades.Gato;
 
@@ -26,7 +26,7 @@ public class TelaGatos extends AppCompatActivity {
 
     RecyclerView recyclerViewGatos;
     RecyclerView.LayoutManager recyclerViewLayoutManager;
-    RecyclerViewAdapter recyclerViewAdapter;
+    RecyclerViewAdapterGatos recyclerViewAdapterGatos;
     Context context;
     private ImageButton buttonHome;
     private Button buttonAddGato;
@@ -38,7 +38,7 @@ public class TelaGatos extends AppCompatActivity {
         setContentView(R.layout.activity_tela_gatos);
         context = getApplicationContext();
 
-        spinner_filtro = findViewById(R.id.spinner_filtro);
+        spinner_filtro = findViewById(R.id.spinner_filtro_doacao);
 
         recyclerViewGatos = findViewById(R.id.recyclerViewGatos);
         buscaNoBanco("");
@@ -49,35 +49,41 @@ public class TelaGatos extends AppCompatActivity {
                 switch (position){
                     case 0:
                         buscaNoBanco("");
+
                         break;
                     case 1:
-                        buscaNoBanco("WHERE doencas = 'Sim' ");
+                        buscaNoBanco("WHERE sexo = 'Macho' ");
                         break;
                     case 2:
-                        buscaNoBanco("WHERE doencas = 'Não' ");
+                        buscaNoBanco("WHERE sexo = 'Fêmea' ");
                         break;
                     case 3:
-                        buscaNoBanco("WHERE castrado = 'Sim' ");
+                        buscaNoBanco("WHERE doencas = 'Sim' ");
                         break;
                     case 4:
-                        buscaNoBanco("WHERE castrado = 'Não' ");
+                        buscaNoBanco("WHERE doencas = 'Não' ");
                         break;
                     case 5:
-                        buscaNoBanco("WHERE filhotes > 0 ");
+                        buscaNoBanco("WHERE castrado = 'Sim' ");
                         break;
                     case 6:
-                        buscaNoBanco("WHERE filhotes = 0 ");
+                        buscaNoBanco("WHERE castrado = 'Não' ");
                         break;
                     case 7:
-                        buscaNoBanco("WHERE idade < 1 ");
+                        buscaNoBanco("WHERE filhotes > 0 ");
                         break;
                     case 8:
+                        buscaNoBanco("WHERE filhotes = 0 ");
+                        break;
+                    case 9:
+                        buscaNoBanco("WHERE idade < 1 ");
+                        break;
+                    case 10:
                         buscaNoBanco("WHERE idade >= 1 ");
                         break;
                 }
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -85,7 +91,7 @@ public class TelaGatos extends AppCompatActivity {
         });
 
         // BOTÃO QUE LEVA PARA A TELA DE ADIÇÃO DE GATOS
-        buttonAddGato = findViewById(R.id.buttonAddGato);
+        buttonAddGato = findViewById(R.id.buttonAddDoacao);
         buttonAddGato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +102,7 @@ public class TelaGatos extends AppCompatActivity {
 
 
         // BOTÃO QUE VOLTA PRA TELA INICIAL
-        buttonHome = findViewById(R.id.buttonHome);
+        buttonHome = findViewById(R.id.activity_tela_gatos_buttonHome);
         buttonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +117,7 @@ public class TelaGatos extends AppCompatActivity {
         ConexaoSQLite conexaoSQLite = new ConexaoSQLite(getApplicationContext());
         List<Gato> gatos = conexaoSQLite.buscaGato(filtro);
         List<String> ids = new ArrayList<String>();
+        List<String> sexos = new ArrayList<String>();
         List<String> doencas = new ArrayList<String>();
         List<String> descricoes = new ArrayList<String>();
         List<String> castrados = new ArrayList<String>();
@@ -120,6 +127,7 @@ public class TelaGatos extends AppCompatActivity {
 
         for (Gato gatoBuscado : gatos) {
             ids.add(String.valueOf(gatoBuscado.getId()));
+            sexos.add(gatoBuscado.getSexo());
             doencas.add(String.valueOf(gatoBuscado.getDoencas()));
             descricoes.add(gatoBuscado.getDescricaoDoencas());
             castrados.add(String.valueOf(gatoBuscado.getCastrado()));
@@ -129,6 +137,7 @@ public class TelaGatos extends AppCompatActivity {
         }
 
         String[] dados_ids = new String[] {};
+        String[] dados_sexos = new String[] {};
         String[] dados_doencas = new String[] {};
         String[] dados_descricoes = new String[] {};
         String[] dados_castrados = new String[] {};
@@ -137,6 +146,7 @@ public class TelaGatos extends AppCompatActivity {
         String[] dados_fotos = new String[] {};
 
         dados_ids = ids.toArray(new String[0]);
+        dados_sexos = sexos.toArray(new String[0]);
         dados_doencas = doencas.toArray(new String[0]);
         dados_descricoes = descricoes.toArray(new String[0]);
         dados_castrados = castrados.toArray(new String[0]);
@@ -146,10 +156,16 @@ public class TelaGatos extends AppCompatActivity {
 
         recyclerViewLayoutManager = new LinearLayoutManager(context);
         recyclerViewGatos.setLayoutManager(recyclerViewLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter(context, dados_ids, dados_doencas,
-                dados_descricoes, dados_castrados, dados_filhotes, dados_idades, dados_fotos);
+        recyclerViewAdapterGatos = new RecyclerViewAdapterGatos(context, dados_ids,
+                dados_sexos,
+                dados_doencas,
+                dados_descricoes,
+                dados_castrados,
+                dados_filhotes,
+                dados_idades,
+                dados_fotos);
         conexaoSQLite.close();
-        recyclerViewGatos.setAdapter(recyclerViewAdapter);
+        recyclerViewGatos.setAdapter(recyclerViewAdapterGatos);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewGatos.getContext(), LinearLayoutManager.VERTICAL);
         recyclerViewGatos.addItemDecoration(dividerItemDecoration);
     }

@@ -25,7 +25,7 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textview"
             android:layout_width="278dp"
             android:layout_height="match_parent"
             android:fontFamily="serif"
@@ -81,6 +81,22 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="Sexo:"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/activity_opcao_gato_sexo_recebido_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/activity_opcao_gato_sexo_recebido_Spinner"
+            android:minHeight="48dp" />
 
         <TextView
             android:id="@+id/textView7"

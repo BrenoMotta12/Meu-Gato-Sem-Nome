@@ -1,54 +1,63 @@
 package com.example.meugatosemnome.entidades;
 
-public abstract class ProdutosEstoque {
+public class ProdutosEstoque {
 
-    private int id;
-    private int idCategoria;
-    private double quantidade;
-    private double valor;
+    private Integer id;
+    private Double quantidade;
+    private String categoria, nome, tipoProduto;
 
     public ProdutosEstoque() {
     }
 
-    public ProdutosEstoque(int id, int idCategoria, double quantidade, double valor) {
+    public ProdutosEstoque(Integer id, String categoria, Double quantidade, String nome, String tipoProduto) {
         this.id = id;
-        this.idCategoria = idCategoria;
+        this.categoria = categoria;
         this.quantidade = quantidade;
-        this.valor = valor;
+        this.nome = nome;
+        this.tipoProduto = tipoProduto;
     }
 
     // Inicio getters and setters
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
-    }
-
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
-    }
-
-    public double getQuantidade() {
+    public Double getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(double quantidade) {
+    public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
     }
 
-    public double getValor() {
-        return valor;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setValor(double valor) {
-        this.valor = valor;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
-    // Fim getters and setters
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getTipoProduto() {
+        return tipoProduto;
+    }
+
+    public void setTipoProduto(String tipoProduto) {
+        this.tipoProduto = tipoProduto;
+    }
+// Fim getters and setters
 }
 
